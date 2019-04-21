@@ -14,10 +14,15 @@ defmodule Procs do
   # iex(8)> send pid, "world"
   # Hello, "world"
   # "world"
-  def greeter(greeting) do
+  def greeter(greeting, count) do
     receive do
-      msg -> IO.puts("#{greeting}, #{msg}")
+      :reset ->
+        greeter(greeting, 0)
+      { :add, n } ->
+        greeter(greeting, count + n)
+      msg ->
+        IO.puts("#{count}: #{greeting}, #{msg}")
+        greeter(greeting, count)
     end
-    greeter(greeting)
   end
 end
