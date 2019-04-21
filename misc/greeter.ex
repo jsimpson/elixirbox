@@ -14,8 +14,12 @@ defmodule Procs do
   # iex(8)> send pid, "world"
   # Hello, "world"
   # "world"
+  #
+  # pid = spawn_link Procs, :greeter, ["Hello", 0]
   def greeter(greeting, count) do
     receive do
+      { :exit, reason } ->
+        exit(reason)
       :reset ->
         greeter(greeting, 0)
       { :add, n } ->
